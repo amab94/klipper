@@ -33,6 +33,7 @@ class tmc2130:
         steps = {'256': 0, '128': 1, '64': 2, '32': 3, '16': 4,
                  '8': 5, '4': 6, '2': 7, '1': 8}
         microsteps = config.getchoice('microsteps', steps, '16')
+        interpolate = config.getboolean('interpolate', True)
         # configure CHOPCONF
         vsense = False
         irun = self.current_bits(run_current, sense_resistor, vsense)
@@ -43,7 +44,7 @@ class tmc2130:
             ihold = self.current_bits(hold_current, sense_resistor, vsense)
         self.add_config_cmd(
             0x6c, TOFF | (HSTRT << 4) | (HEND << 7) | (BLANK_TIME_SELECT << 15)
-            | (vsense << 17) | (microsteps << 24))
+            | (vsense << 17) | (microsteps << 24) | (interpolate << 28))
         # configure IHOLD_IRUN
         self.add_config_cmd(0x10, ihold | (irun << 8) | (IHOLDDELAY << 16))
         # configure TPOWERDOWN
