@@ -17,16 +17,16 @@ class tmc2130:
         printer = config.get_printer()
         # pin setup
         ppins = printer.lookup_object("pins")
-        enable_pin = config.get('enable_pin')
-        enable_pin_params = ppins.lookup_pin('digital_out', enable_pin)
-        if enable_pin_params['invert']:
+        cs_pin = config.get('cs_pin')
+        cs_pin_params = ppins.lookup_pin('digital_out', cs_pin)
+        if cs_pin_params['invert']:
             raise pins.error("tmc2130 can not invert pin")
-        self.mcu = enable_pin_params['chip']
-        pin = enable_pin_params['pin']
+        self.mcu = cs_pin_params['chip']
+        pin = cs_pin_params['pin']
         self.oid = self.mcu.create_oid()
         self.mcu.add_config_cmd(
             "config_spi oid=%d bus=%d pin=%s mode=%d rate=%d shutdown_msg=" % (
-                self.oid, 0, enable_pin_params['pin'], 3, 3600000))
+                self.oid, 0, cs_pin_params['pin'], 3, 3600000))
         run_current = config.getfloat('run_current', above=0.)
         hold_current = config.getfloat('hold_current', above=0.)
         sense_resistor = config.getfloat('sense_resistor', 0.110, above=0.)
