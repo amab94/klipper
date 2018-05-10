@@ -32,7 +32,7 @@ class tmc2130:
         sense_resistor = config.getfloat('sense_resistor', 0.110, above=0.)
         steps = {'256': 0, '128': 1, '64': 2, '32': 3, '16': 4,
                  '8': 5, '4': 6, '2': 7, '1': 8}
-        microsteps = config.getchoice('microsteps', steps, '16')
+        microsteps = config.getchoice('microsteps', steps)
         interpolate = config.getboolean('interpolate', True)
         # configure CHOPCONF
         vsense = False
