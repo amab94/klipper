@@ -5,12 +5,12 @@
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import math
 
-IHOLDDELAY = 4
-TPOWERDOWN = 8
+IHOLDDELAY = 8
+TPOWERDOWN = 0
 BLANK_TIME_SELECT = 1
-TOFF = 5
-HSTRT = 3
-HEND = 2
+TOFF = 4
+HSTRT = 0
+HEND = 7
 
 class tmc2130:
     def __init__(self, config):
@@ -28,7 +28,8 @@ class tmc2130:
             "config_spi oid=%d bus=%d pin=%s mode=%d rate=%d shutdown_msg=" % (
                 self.oid, 0, cs_pin_params['pin'], 3, 3600000))
         run_current = config.getfloat('run_current', above=0., maxval=2.)
-        hold_current = config.getfloat('hold_current', above=0., maxval=2.)
+        hold_current = config.getfloat('hold_current', run_current,
+                                       above=0., maxval=2.)
         sense_resistor = config.getfloat('sense_resistor', 0.110, above=0.)
         steps = {'256': 0, '128': 1, '64': 2, '32': 3, '16': 4,
                  '8': 5, '4': 6, '2': 7, '1': 8}
